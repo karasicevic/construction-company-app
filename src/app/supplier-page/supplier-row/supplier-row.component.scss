@@ -1,0 +1,32 @@
+.supplier-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border: 1px solid #ad42f4;
+    background-color: #e1bafb;
+    margin-bottom: 10px;
+  }
+  
+  .tax-id,
+  .name,
+  .current-account,
+  .phone-number {
+    flex: 1;
+    padding: 5px;
+  }
+  
+  .tax-id {
+    color: #800080; 
+  }
+  
+  .name {
+    color: #9370db;
+  }
+  
+  .current-account {
+    color: #800080; 
+  }
+  
+  .phone-number {
+    color: #9370db; 
+  }

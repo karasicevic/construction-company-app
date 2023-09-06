@@ -1,0 +1,161 @@
+::ng-deep .mat-form-field {
+  background-color: #c289dc; /* Promenite boju pozadine po želji */
+}
+
+.add-dispatch-note-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  position: relative;
+  top: 0;
+  left: 0;
+  width:100%;
+  height: 100%;
+  background-image: url('https://www.hashmicro.com/blog/wp-content/uploads/2022/10/Tools-16.jpg'); 
+  background-size: cover;
+  background-position: center;
+  opacity: 0.9; 
+}
+
+/* Dodajte stil za unutar forme prema vašim potrebama */
+.form-container form {
+  background-color: rgb(201, 113, 233);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.readonly-field {
+  color: rgb(125, 17, 119) ;
+  background-color: rgb(244, 214, 254);
+}
+
+  
+  .addDispatchNoteForm {
+    background-color: rgb(201, 113, 233);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+  }
+  
+  .text-on-form {
+    color: rgb(116, 48, 116);
+    font-size: 18px;
+    margin-bottom: 15px;
+  }
+
+  .form-control {
+      display: flex;
+      width: 500px;
+  }
+  
+  .mat-form-field {
+    color: rgb(88, 17, 84);
+    margin-bottom: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    flex-direction: column; 
+  }
+  .mat-form-field label {
+    margin-right: 5px; 
+  }
+  
+  .combobox-row {
+    display: flex;
+    justify-content: space-between;
+    border: 1px solid rgb(199, 117, 196);
+    padding: 15px; 
+    border-radius: 5px;
+    flex: 1;
+    margin: 0 5px;
+  }
+  
+  select {
+    padding: 5px;
+    background-color: rgb(255, 244, 244);
+    border: 1px solid rgb(96, 108, 93);
+    border-radius: 5px;
+  }
+  
+  .btn-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  
+  .btn-add-note,
+  .btn-ponisti {
+    padding: 8px 15px;
+    background-color: rgb(209, 130, 218);
+    border: none;
+    border-radius: 5px;
+    color: rgb(0, 0, 0);
+    cursor: pointer;
+  }
+  
+  
+ .btn-add-note:hover,
+  .btn-ponisti:hover {
+    background-color: rgb(255, 244, 244);
+    color: rgb(162, 76, 173);
+  }
+  
+  .validators{
+    color: rgb(206, 26, 26);
+    font-size: small;
+    font-family: Arial, Helvetica, sans-serif;
+    font-style: italic;
+  }
+  .btn-add-note [disabled] {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+  
+  
+input[type="text"][formControlName="searchQuery"] {
+  width: 90%;
+  padding: 5px;
+  border: 1px solid rgb(247, 230, 196);
+  border-radius: 4px;
+  background-color: rgb(255, 244, 244);
+  font-size: 16px;
+}
+
+.search-container {
+  position: relative;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  background-color: rgb(88, 17, 84);
+  box-shadow: 0px 8px 16px 0px rgb(96, 108, 93);
+  z-index: 1;
+  width: 95%; 
+  box-sizing: border-box; 
+}
+
+li {
+  padding: 7px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+li:hover {
+  background-color: rgb(88, 17, 84)
+}
+
+
+li span {
+  font-weight: bold;
+  color: rgb(88, 17, 84)
+}
+
+
+.search-container {
+  position: relative;
+  margin-bottom: 20px;
+}

@@ -1,0 +1,95 @@
+<div class="form-container">
+<form [formGroup]="addSupplierForm" (ngSubmit)="addSupplier($event)" >
+    <h4 class="text-on-form">Unesite podatke o novom dobavljaču</h4>
+
+<mat-form-field class="form-group">
+  <mat-label>PIB</mat-label>
+  <input matInput type="text" id="taxId" formControlName="taxId" />
+  <mat-error *ngIf="addSupplierForm?.get('taxId')?.hasError('required') && addSupplierForm?.get('taxId')?.dirty">
+      {{ validationMessages.taxId.required }}
+  </mat-error>
+  <mat-error *ngIf="addSupplierForm?.get('taxId')?.hasError('pattern')">
+      {{ validationMessages.taxId.pattern }}
+  </mat-error>
+</mat-form-field>
+
+<!-- Naziv -->
+<mat-form-field class="form-group">
+  <mat-label>Naziv</mat-label>
+  <input matInput type="text" id="name" formControlName="name" />
+  <mat-error *ngIf="addSupplierForm.controls['name'].hasError('required') && addSupplierForm.controls['name'].dirty">
+      {{validationMessages.name.required}}
+  </mat-error>
+</mat-form-field>
+
+<!-- Tekući račun -->
+<mat-form-field class="form-group">
+  <mat-label>Tekući račun</mat-label>
+  <input matInput type="text" id="currentAccount" formControlName="currentAccount" />
+  <mat-error *ngIf="addSupplierForm.controls['currentAccount'].hasError('required') && addSupplierForm.controls['currentAccount'].dirty">
+      {{validationMessages.currentAccount.required}}
+  </mat-error>
+  <mat-error *ngIf="addSupplierForm.controls['currentAccount'].hasError('minlength') && addSupplierForm.controls['currentAccount'].dirty">
+      {{validationMessages.currentAccount.minLength}}
+  </mat-error>
+  <mat-error *ngIf="addSupplierForm.controls['currentAccount'].hasError('maxlength') && addSupplierForm.controls['currentAccount'].dirty">
+      {{validationMessages.currentAccount.maxLength}}
+  </mat-error>
+  <mat-error *ngIf="addSupplierForm.controls['currentAccount'].hasError('pattern') && addSupplierForm.controls['currentAccount'].dirty">
+      {{validationMessages.currentAccount.pattern}}
+  </mat-error>
+</mat-form-field>
+
+<!-- Broj telefona -->
+<mat-form-field class="form-group">
+  <mat-label>Broj telefona</mat-label>
+  <input matInput type="text" id="phoneNumber" formControlName="phoneNumber" />
+  <mat-error *ngIf="addSupplierForm.controls['phoneNumber'].hasError('pattern') && addSupplierForm.controls['phoneNumber'].dirty">
+      {{validationMessages.phoneNumber.pattern}}
+  </mat-error>
+  <mat-error *ngIf="addSupplierForm.controls['phoneNumber'].hasError('required') && addSupplierForm.controls['phoneNumber'].dirty">
+      {{validationMessages.phoneNumber.required}}
+  </mat-error>
+</mat-form-field>
+
+<p class="form-group">Sedište kompanije</p>
+
+<div class="combobox-row">
+  <!-- Mesto -->
+  <mat-form-field class="form-group">
+      <mat-label>Mesto</mat-label>
+      <mat-select id="city" formControlName="city">
+          <mat-option value="option1">Option 1</mat-option>
+          <mat-option value="option2">Option 2</mat-option>
+          <mat-option value="option3">Option 3</mat-option>
+      </mat-select>
+  </mat-form-field>
+
+  <!-- Ulica -->
+  <mat-form-field class="form-group">
+      <mat-label>Ulica</mat-label>
+      <mat-select id="street" formControlName="street">
+          <mat-option value="option1">Option 1</mat-option>
+          <mat-option value="option2">Option 2</mat-option>
+          <mat-option value="option3">Option 3</mat-option>
+      </mat-select>
+  </mat-form-field>
+
+  <!-- Broj -->
+  <mat-form-field class="form-group">
+      <mat-label>Broj</mat-label>
+      <mat-select id="number" formControlName="number">
+          <mat-option value="option1">Option 1</mat-option>
+          <mat-option value="option2">Option 2</mat-option>
+          <mat-option value="option3">Option 3</mat-option>
+      </mat-select>
+  </mat-form-field>
+</div>
+
+
+    <div class="btn-container">
+        <button mat-raised-button color="primary"  [disabled]="addSupplierForm.invalid" (click)="addSupplier($event)">Zapamti</button>
+        <button type="reset" mat-raised-button color="warn" >Poništi</button>
+      </div>
+  </form>
+</div>

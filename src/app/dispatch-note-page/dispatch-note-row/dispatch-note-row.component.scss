@@ -1,23 +1,21 @@
-.supplier-page {
-  display: grid;
-  min-height: 100vh;
-  top: 0;
-  left: 0;
-  width:100%;
-  height: 100%;
-  background-image: url('https://www.hashmicro.com/blog/wp-content/uploads/2022/10/Tools-16.jpg'); 
-  background-size: cover;
-  background-position: center;
-  opacity: 0.9; 
-}
-.form-container {
+::ng-deep .mat-form-field {
+    background-color: #c289dc; /* Promenite boju pozadine po želji */
+  }
+  
+  .add-dispatch-note-page {
     display: flex;
-    align-items: center;
-    position: relative;
-    margin-top: 1%;
-    margin-left: 5%;
     justify-content: center;
-    opacity: 0.9;
+    align-items: center;
+    min-height: 100vh;
+    position: relative;
+    top: 0;
+    left: 0;
+    width:100%;
+    height: 100%;
+    background-image: url('https://www.hashmicro.com/blog/wp-content/uploads/2022/10/Tools-16.jpg'); 
+    background-size: cover;
+    background-position: center;
+    opacity: 0.9; 
   }
   
   /* Dodajte stil za unutar forme prema vašim potrebama */
@@ -27,14 +25,14 @@
     border-radius: 8px;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
   }
-
-.readonly-field {
+  
+  .readonly-field {
     color: rgb(125, 17, 119) ;
     background-color: rgb(244, 214, 254);
   }
   
     
-    .add-supplier-form {
+    .addDispatchNoteForm {
       background-color: rgb(201, 113, 233);
       padding: 20px;
       border-radius: 8px;
@@ -46,20 +44,20 @@
       font-size: 18px;
       margin-bottom: 15px;
     }
-
+  
     .form-control {
         display: flex;
         width: 500px;
     }
     
-    .form-group {
+    .mat-form-field {
       color: rgb(88, 17, 84);
       margin-bottom: 10px;
       margin-left: 10px;
       margin-right: 10px;
       flex-direction: column; 
     }
-    .form-group label {
+    .mat-form-field label {
       margin-right: 5px; 
     }
     
@@ -86,7 +84,7 @@
       margin-top: 20px;
     }
     
-    .btn-add-supplier,
+    .btn-add-note,
     .btn-ponisti {
       padding: 8px 15px;
       background-color: rgb(209, 130, 218);
@@ -97,19 +95,19 @@
     }
     
     
-    .btn-edit-supplier:hover,
+   .btn-add-note:hover,
     .btn-ponisti:hover {
       background-color: rgb(255, 244, 244);
       color: rgb(162, 76, 173);
     }
     
     .validators{
-      color: rgb(218, 97, 97);
+      color: rgb(206, 26, 26);
       font-size: small;
       font-family: Arial, Helvetica, sans-serif;
       font-style: italic;
     }
-    .btn-edit-supplier [disabled] {
+    .btn-add-note [disabled] {
       opacity: 0.6;
       pointer-events: none;
     }
@@ -161,29 +159,4 @@
     position: relative;
     margin-bottom: 20px;
   }
-  
-  .supplier-table-header {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
-    background-color: rgb(149, 139, 149);
-    margin-bottom: 10px;
-    width: auto;
-  }
-
-  .h2 {
-    margin-left: 5px;
-    color: rgb(59, 19, 55);
-    text-shadow: 1cap;
-  }
-  
-  .tax-id,
-  .name,
-  .current-account,
-  .phone-number {
-    flex: 1;
-    padding: 5px;
-    color:rgb(88, 17, 84)
-  }
-  
   

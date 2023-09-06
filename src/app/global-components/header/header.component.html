@@ -1,0 +1,17 @@
+<mat-toolbar color="primary">
+    <span>PLACE FOR LOGO</span>
+    <button mat-button routerLink="/home" routerLinkActive="active-link">Home</button>
+    <button mat-button [matMenuTriggerFor]="supplierMenu">Suppliers</button>
+    <button mat-button [matMenuTriggerFor]="dispatchMenu">Dispatch notes</button>
+    <button mat-button routerLink="/contact" routerLinkActive="active-link">Contact</button>
+</mat-toolbar>
+
+<mat-menu #supplierMenu="matMenu">
+  <button mat-menu-item routerLink="/suppliers" routerLinkActive="active-link">Overview</button>
+  <button mat-menu-item routerLink="/suppliers/add" routerLinkActive="active-link">Supplier administration</button>
+</mat-menu>
+
+<mat-menu #dispatchMenu="matMenu">
+  <button mat-menu-item routerLink="/dispatch-notes" routerLinkActive="active-link">Overview</button>
+  <button mat-menu-item routerLink="/dispatch-notes/add" routerLinkActive="active-link">Dispatch notes administration</button>
+</mat-menu>
