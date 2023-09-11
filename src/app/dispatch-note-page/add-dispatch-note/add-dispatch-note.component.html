@@ -60,14 +60,22 @@
                         <div style="display: flex; flex-direction: row; gap: 10px;">
                         <mat-form-field>
                             <mat-label>Artikal</mat-label>
-                            <mat-select formControlName="itemA" required>
+                            <mat-select formControlName="itemA" (valueChange)="onItemAChange($event, i)" required>
                                 <mat-option *ngFor="let itemA of itemsA" [value]="itemA.name">{{ itemA.name }}</mat-option>
                             </mat-select>
-                            <mat-error *ngIf="item.get('itemA')!.hasError('required')">Artikal je obavezan.</mat-error>
+                            <mat-error *ngIf="item.get('itemA')!.hasError('required')&&item.get('itemA')">Artikal je obavezan.</mat-error>
                         </mat-form-field>
-                        <mat-form-field>
+                        <mat-form-field class="small-input">
+                            <mat-label>JM</mat-label>
+                            <input matInput class="small-input" readonly type="itemAMU" formControlName="itemAMU"  />
+                         </mat-form-field>
+                        <mat-form-field class="small-input">
+                            <mat-label>Cena</mat-label>
+                            <input matInput class="small-input" readonly type="itemAPrice" formControlName="itemAPrice" /> 
+                        </mat-form-field>
+                        <mat-form-field class="small-input">
                             <mat-label>Količina</mat-label>
-                            <input matInput type="number" formControlName="quantity" required />
+                            <input matInput class="small-input" type="number" formControlName="quantity" required />
                             <mat-error *ngIf="item.get('quantity')!.hasError('required')">Količina je obavezna.</mat-error>
                             <mat-error *ngIf="item.get('quantity')!.hasError('pattern')">Količina mora biti ceo broj.</mat-error>
                         </mat-form-field>
@@ -75,9 +83,9 @@
                             <mat-label>Napomena</mat-label>
                             <input matInput type="text" formControlName="note" />
                         </mat-form-field>
-                        <mat-form-field>
-                            <mat-label>Broj stavke narudžbenice</mat-label>
-                            <input matInput type="number" formControlName="itemOfPurchaseOrder" required />
+                        <mat-form-field >
+                            <mat-label>Stavka narudžbenice</mat-label>
+                            <input matInput  type="number" formControlName="itemOfPurchaseOrder" required />
                             <mat-error *ngIf="item.get('itemOfPurchaseOrder')!.hasError('required')">Broj stavke narudžbenice je obavezan.</mat-error>
                             <mat-error *ngIf="item.get('itemOfPurchaseOrder')!.hasError('pattern')">Broj stavke narudžbenice sastoji se samo od cifara.</mat-error>
                         </mat-form-field>

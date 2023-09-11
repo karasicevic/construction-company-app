@@ -37,9 +37,6 @@ export class AddDispatchNoteComponent {
   itemsA: Item[]=[];
   itemsFormArray!: FormArray;
 
-
-
-
   constructor(private formBuilder: FormBuilder, 
               private itemAService: ItemAService, 
               private supplierService: SupplierService,
@@ -48,7 +45,9 @@ export class AddDispatchNoteComponent {
   }
 
   ngOnInit(){
-    this.itemsA=this.itemAService.getItemsA();
+    this.itemAService.getAllItems().subscribe((itemsARes: Item[]) => {
+    this.itemsA=itemsARes;
+  })
     console.log(this.itemsA)
     this.supplierService.getAllSuppliers().subscribe((suppliersRes: Supplier[]) => {
       this.suppliers=suppliersRes;
@@ -66,12 +65,15 @@ export class AddDispatchNoteComponent {
       selectedDate: [null, Validators.required],
       items: this.formBuilder.array([]) 
     });
+    
   }
 
   addDispatchNote(event: Event): void{
     event.preventDefault();
     if (this.addDispatchNoteForm.valid) {
       // Implementirajte slanje podataka na server
+
+      
       
       const conCom=new ConstructionCompany();
       const formData = this.addDispatchNoteForm.value;
@@ -85,6 +87,7 @@ export class AddDispatchNoteComponent {
         formData.itemsFormArray
       );
         this.dispatchService.addDispatchNote(newNote);
+        console.log(newNote)
     }
   }
   addItem() {
@@ -93,8 +96,12 @@ export class AddDispatchNoteComponent {
     if (this.addDispatchNoteForm.valid) {
 //dodavanje u niz TODO
       const itemsData = this.itemsFormArray.value;
+
       console.log(itemsData); 
     }
+    const itemsData = this.itemsFormArray.value;
+    console.log("lose")
+    console.log(itemsData); 
   }
 
   createItem() {
@@ -110,5 +117,12 @@ export class AddDispatchNoteComponent {
     this.itemsFormArray.removeAt(index);
   }
 
+  onItemAChange(event: any,  index: number): void {
+    const selectedItemAValue = event; 
+    const itemArray = this.addDispatchNoteForm.get('items') as FormArray;
+    const itemGroup = itemArray.at(index);
+    itemGroup.get('itemAPrice')?.setValue(selectedItemAValue.price*selectedItemAValue.VATrate);
+    itemGroup.get('itemAMU')?.setValue(selectedItemAValue.measureUnit.designation);
+  }
 
 }

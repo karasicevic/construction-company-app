@@ -82,39 +82,80 @@
             </mat-form-field>
             </div>
 
-            <div formArrayName="items">
-                <div *ngFor="let item of itemsFormArray?.controls; let i = index" [formGroupName]="i">
-                    <div style="display: flex; flex-direction: row; gap: 10px;">
-                    <mat-form-field>
-                        <mat-label>Artikal</mat-label>
-                        <mat-select formControlName="itemA" required>
-                            <mat-option *ngFor="let itemA of itemsA" [value]="itemA.name">{{ itemA.name }}</mat-option>
-                        </mat-select>
-                        <mat-error *ngIf="item.get('itemA')!.hasError('required')">Artikal je obavezan.</mat-error>
-                    </mat-form-field>
-                    <mat-form-field>
-                        <mat-label>Količina</mat-label>
-                        <input matInput type="number" formControlName="quantity" required />
-                        <mat-error *ngIf="item.get('quantity')!.hasError('required')">Količina je obavezna.</mat-error>
-                        <mat-error *ngIf="item.get('quantity')!.hasError('pattern')">Količina mora biti ceo broj.</mat-error>
-                    </mat-form-field>
-                    <mat-form-field>
-                        <mat-label>Napomena</mat-label>
-                        <input matInput type="text" formControlName="note" />
-                    </mat-form-field>
-                    <mat-form-field>
-                        <mat-label>Broj stavke narudžbenice</mat-label>
-                        <input matInput type="number" formControlName="itemOfPurchaseOrder" required />
-                        <mat-error *ngIf="item.get('itemOfPurchaseOrder')!.hasError('required')">Broj stavke narudžbenice je obavezan.</mat-error>
-                        <mat-error *ngIf="item.get('itemOfPurchaseOrder')!.hasError('pattern')">Broj stavke narudžbenice sastoji se samo od cifara.</mat-error>
-                    </mat-form-field>
-                    <button mat-raised-button color="warn" (click)="deleteItem(i)">Obriši</button>
-                    </div>
-                </div>
-            </div>
-
             <button mat-raised-button color="primary" (click)="addItem()">Dodaj stavku</button>
+<!--dodaj polja za izmenu-->
+<div  *ngIf="editItemB" style="display: flex; flex-direction: row; gap: 10px;">
+    <mat-form-field>
+        <mat-label>Artikal</mat-label>
+        <input matInput readonly type="eitemA" formControlName="eitemA"  />
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>JM</mat-label>
+        <input matInput readonly type="eitemAMU" formControlName="eitemAMU"  />
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Cena</mat-label>
+        <input matInput readonly type="eitemPrice" formControlName="eitemPrice" />
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Količina</mat-label>
+        <input matInput type="number" formControlName="quantity" required />
+        <mat-error *ngIf="editForm.get('quantity')!.hasError('required')">Količina je obavezna.</mat-error>
+        <mat-error *ngIf="editForm.get('quantity')!.hasError('pattern')">Količina mora biti ceo broj.</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Napomena</mat-label>
+        <input matInput type="text" formControlName="note" />
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Broj stavke narudžbenice</mat-label>
+        <input matInput type="number" formControlName="itemOfPurchaseOrder" required />
+        <mat-error *ngIf="editForm.get('itemOfPurchaseOrder')!.hasError('required')">Broj stavke narudžbenice je obavezan.</mat-error>
+        <mat-error *ngIf="editForm.get('itemOfPurchaseOrder')!.hasError('pattern')">Broj stavke narudžbenice sastoji se samo od cifara.</mat-error>
+    </mat-form-field>
+    <button mat-raised-button color="primary" [disabled]="editForm.invalid" (click)="saveEditItem()">Sačuvaj</button>
+    </div>
 
+
+<table mat-table [dataSource]="items" class="mat-elevation-z8">
+    <ng-container matColumnDef="itemA">
+      <th mat-header-cell *matHeaderCellDef>Artikal</th>
+      <td mat-cell *matCellDef="let item">{{ item.item.name }}</td>
+    </ng-container>
+    <ng-container matColumnDef="itemAMU">
+        <th mat-header-cell *matHeaderCellDef>JM</th>
+        <td mat-cell *matCellDef="let item">{{ item.item.measureUnit.designation }}</td>
+      </ng-container>
+      <ng-container matColumnDef="itemAPrice">
+        <th mat-header-cell *matHeaderCellDef>Cena</th>
+        <td mat-cell *matCellDef="let item">{{ item.item.price*item.item.VATrate }}</td>
+      </ng-container>
+  
+    <ng-container matColumnDef="quantity">
+      <th mat-header-cell *matHeaderCellDef>Količina</th>
+      <td mat-cell *matCellDef="let item">{{ item.quantity }}</td>
+    </ng-container>
+    <ng-container matColumnDef="note">
+      <th mat-header-cell *matHeaderCellDef>Napomena</th>
+      <td mat-cell *matCellDef="let item">{{ item.note }}</td>
+    </ng-container>
+    <ng-container matColumnDef="itemOfPurchaseOrder">
+        <th mat-header-cell *matHeaderCellDef>Stavka narudžbenice</th>
+        <td mat-cell *matCellDef="let item">{{ item.itemOfPurchaseOrder }}</td>
+      </ng-container>
+  
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>Akcije</th>
+      <td mat-cell *matCellDef="let item">
+        <button mat-button (click)="editItem(item)">Izmeni</button>
+        <button mat-button (click)="deleteItem(item)">Obriši</button>
+      </td>
+    </ng-container>
+  
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  
    
             
 

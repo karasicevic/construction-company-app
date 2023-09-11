@@ -18,7 +18,9 @@ export class DispatchNoteRowComponent {
   @Input() note!:DispatchNote;
   editForm!: FormGroup;
   showForm: boolean=false;
+  editItemB: boolean=false;
   itemsFormArray!: FormArray;
+  items: ItemOfDispatchNote[]=[];
   validationMessages = {
     number: {
       required: 'Broj otpremnice je obavezan!',
@@ -35,6 +37,7 @@ export class DispatchNoteRowComponent {
       pattern:' Broj naradžbenice se sastoji samo od cifara!'
     }
   };
+  @Input() displayedColumns!: string[];
   
   itemsA: Item[]=[];
   suppliers: Supplier[]=[];
@@ -47,7 +50,9 @@ export class DispatchNoteRowComponent {
     ){
       this.initializeForm();
       //this.itemsFormArray.patchValue(this.note.items);
-      this.itemsA=itemAService.getItemsA();
+      itemAService.getAllItems().subscribe((itemsARes: Item[])=>{
+        this.itemsA=itemsARes;
+      });
       this.supplierService.getAllSuppliers().subscribe((suppliersRes: Supplier[]) => {
         this.suppliers=suppliersRes;
       })
@@ -72,7 +77,9 @@ export class DispatchNoteRowComponent {
       //inicijalizacija forme
       //todo
       this.showForm=true;
-     // this.patchValues();
+      this.patchValues();
+      this.items=this.note.items;
+      
     }
 
     editDispatchNote(event: Event): void{
@@ -110,8 +117,23 @@ export class DispatchNoteRowComponent {
       }
     }
 
-    deleteItem(index: number) {
-      this.itemsFormArray.removeAt(index);
+
+
+    saveEditItem(){
+      console.log("cuvanje izmene stavke")
+      this.editItemB=false;
+    }
+
+    deleteItem(item:ItemOfDispatchNote) {
+    }
+    editItem(item:ItemOfDispatchNote) {
+      this.editItemB=true;
+      this.editForm.get('eitemA')?.setValue(item.item.name);
+      this.editForm.get('eitemAMU')?.setValue(item.item.measureUnit.designation);      
+      this.editForm.get('eitemPrice')?.setValue(item.item.price*item.item.VATrate);
+      this.editForm.get('quantity')?.setValue(item.quantity);
+      this.editForm.get('note')?.setValue(item.note);
+      this.editForm.get('itemOfPurchaseOrder')?.setValue(item.itemOfPurchaseOrder);
     }
 
     closeForm(){

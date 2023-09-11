@@ -27,6 +27,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { DispatchNoteRowComponent } from './dispatch-note-page/dispatch-note-row/dispatch-note-row.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -58,7 +59,8 @@ import { DispatchNoteRowComponent } from './dispatch-note-page/dispatch-note-row
     MatSelectModule,
     MatInputModule,
     MatIconModule,
-    MatTableModule 
+    MatTableModule,
+    HttpClientModule 
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,110 +1,105 @@
 <div class="supplier-page">
-<div class="form-container">
-<form [formGroup]="searchForm" >
-    <h4 class="text-on-form">Unesite PIB ili naziv da pretražite dobavljače u sistemu.</h4>
-    
-<div class="search-container">
-<input type="text" formControlName="searchQuery" (input)="onSearch()">
-<ul *ngIf="searchResults.length > 0 && searchForm.value.searchQuery">
-<li *ngFor="let result of searchResults"
-    (click)="selectSearchResult(result)">
-  {{ result.taxId }} || {{result.name}}
-</li>
-</ul>
-</div>
-<div >
-<!-- PIB -->
-<mat-form-field class="form-group" *ngIf="showForm">
-  <mat-label>PIB</mat-label>
-  <input matInput type="text" id="taxId" formControlName="taxId" [readonly]="true" [ngClass]="{'readonly-field': true}" />
-  <mat-error *ngIf="searchForm?.get('taxId')?.hasError('required') && searchForm?.get('taxId')?.dirty">
-      {{ validationMessages.taxId.required }}
-  </mat-error>
-  <mat-error *ngIf="searchForm?.get('taxId')?.hasError('pattern')">
-      {{ validationMessages.taxId.pattern }}
-  </mat-error>
-</mat-form-field>
+  <div class="form-container">
+    <form [formGroup]="searchForm">
+      <h4 class="text-on-form">Unesite PIB ili naziv da pretražite dobavljače u sistemu.</h4>
 
-<!-- Naziv -->
-<mat-form-field class="form-group" *ngIf="showForm">
-  <mat-label>Naziv</mat-label>
-  <input matInput type="text" id="name" formControlName="name" />
-  <mat-error *ngIf="searchForm.controls['name'].hasError('required') && searchForm.controls['name'].dirty">
-      {{validationMessages.name.required}}
-  </mat-error>
-</mat-form-field>
-
-<!-- Tekući račun -->
-<mat-form-field class="form-group" *ngIf="showForm">
-  <mat-label>Tekući račun</mat-label>
-  <input matInput type="text" id="currentAccount" formControlName="currentAccount" />
-  <mat-error *ngIf="searchForm.controls['currentAccount'].hasError('required') && searchForm.controls['currentAccount'].dirty">
-      {{validationMessages.currentAccount.required}}
-  </mat-error>
-  <mat-error *ngIf="searchForm.controls['currentAccount'].hasError('minlength') && searchForm.controls['currentAccount'].dirty">
-      {{validationMessages.currentAccount.minLength}}
-  </mat-error>
-  <mat-error *ngIf="searchForm.controls['currentAccount'].hasError('maxlength') && searchForm.controls['currentAccount'].dirty">
-      {{validationMessages.currentAccount.maxLength}}
-  </mat-error>
-  <mat-error *ngIf="searchForm.controls['currentAccount'].hasError('pattern') && searchForm.controls['currentAccount'].dirty">
-      {{validationMessages.currentAccount.pattern}}
-  </mat-error>
-</mat-form-field>
-
-<!-- Broj telefona -->
-<mat-form-field class="form-group" *ngIf="showForm">
-  <mat-label>Broj telefona</mat-label>
-  <input matInput type="text" id="phoneNumber" formControlName="phoneNumber" />
-  <mat-error *ngIf="searchForm.controls['phoneNumber'].hasError('pattern') && searchForm.controls['phoneNumber'].dirty">
-      {{validationMessages.phoneNumber.pattern}}
-  </mat-error>
-  <mat-error *ngIf="searchForm.controls['phoneNumber'].hasError('required') && searchForm.controls['phoneNumber'].dirty">
-      {{validationMessages.phoneNumber.required}}
-  </mat-error>
-</mat-form-field>
-
-<p class="form-group" *ngIf="showForm">Sedište kompanije</p>
-
-<div class="combobox-row" *ngIf="showForm">
-  <!-- Mesto -->
-  <mat-form-field class="form-group">
-      <mat-label>Mesto</mat-label>
-      <mat-select id="city" formControlName="city">
-          <mat-option value="option1">Option 1</mat-option>
-          <mat-option value="option2">Option 2</mat-option>
-          <mat-option value="option3">Option 3</mat-option>
-      </mat-select>
-  </mat-form-field>
-
-  <!-- Ulica -->
-  <mat-form-field class="form-group">
-      <mat-label>Ulica</mat-label>
-      <mat-select id="street" formControlName="street">
-          <mat-option value="option1">Option 1</mat-option>
-          <mat-option value="option2">Option 2</mat-option>
-          <mat-option value="option3">Option 3</mat-option>
-      </mat-select>
-  </mat-form-field>
-
-  <!-- Broj -->
-  <mat-form-field class="form-group">
-      <mat-label>Broj</mat-label>
-      <mat-select id="number" formControlName="number">
-          <mat-option value="option1">Option 1</mat-option>
-          <mat-option value="option2">Option 2</mat-option>
-          <mat-option value="option3">Option 3</mat-option>
-      </mat-select>
-  </mat-form-field>
-</div>
-  <div class="btn-container" *ngIf="showForm">
-        <button mat-raised-button color="primary" [disabled]="!searchForm.valid" (click)="editSupplier()">Zapamti izmene</button>
-        <button type="reset" mat-raised-button color="warn" (click)="onPonisti()">Poništi</button>
+      <div class="search-container">
+        <input type="text" formControlName="searchQuery" (input)="onSearch()">
+        <ul *ngIf="searchResults.length > 0 && searchForm.value.searchQuery">
+          <li *ngFor="let result of searchResults" (click)="selectSearchResult(result)">
+            {{ result.taxId }} || {{result.name}}
+          </li>
+        </ul>
       </div>
+      <div>
+        <!-- PIB -->
+        <mat-form-field class="form-group" *ngIf="showForm">
+          <mat-label>PIB</mat-label>
+          <input matInput type="text" id="taxId" formControlName="taxId" [readonly]="true"
+            [ngClass]="{'readonly-field': true}" />
+        </mat-form-field>
 
-    </div>   
-  </form>
-</div>
+        <!-- Naziv -->
+        <mat-form-field class="form-group" *ngIf="showForm">
+          <mat-label>Naziv</mat-label>
+          <input matInput type="text" id="name" formControlName="name" />
+          <mat-error *ngIf="searchForm.controls['name'].hasError('required') && searchForm.controls['name'].dirty">
+            {{validationMessages.name.required}}
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Tekući račun -->
+        <mat-form-field class="form-group" *ngIf="showForm">
+          <mat-label>Tekući račun</mat-label>
+          <input matInput type="text" id="currentAccount" formControlName="currentAccount" />
+          <mat-error
+            *ngIf="searchForm.controls['currentAccount'].hasError('required') && searchForm.controls['currentAccount'].dirty">
+            {{validationMessages.currentAccount.required}}
+          </mat-error>
+          <mat-error
+            *ngIf="searchForm.controls['currentAccount'].hasError('minlength') && searchForm.controls['currentAccount'].dirty">
+            {{validationMessages.currentAccount.minLength}}
+          </mat-error>
+          <mat-error
+            *ngIf="searchForm.controls['currentAccount'].hasError('maxlength') && searchForm.controls['currentAccount'].dirty">
+            {{validationMessages.currentAccount.maxLength}}
+          </mat-error>
+          <mat-error
+            *ngIf="searchForm.controls['currentAccount'].hasError('pattern') && searchForm.controls['currentAccount'].dirty">
+            {{validationMessages.currentAccount.pattern}}
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Broj telefona -->
+        <mat-form-field class="form-group" *ngIf="showForm">
+          <mat-label>Broj telefona</mat-label>
+          <input matInput type="text" id="phoneNumber" formControlName="phoneNumber" />
+          <mat-error
+            *ngIf="searchForm.controls['phoneNumber'].hasError('pattern') && searchForm.controls['phoneNumber'].dirty">
+            {{validationMessages.phoneNumber.pattern}}
+          </mat-error>
+          <mat-error
+            *ngIf="searchForm.controls['phoneNumber'].hasError('required') && searchForm.controls['phoneNumber'].dirty">
+            {{validationMessages.phoneNumber.required}}
+          </mat-error>
+        </mat-form-field>
+
+        <p class="form-group" *ngIf="showForm">Sedište kompanije</p>
+
+        <div class="combobox-row" *ngIf="showForm">
+
+          <mat-form-field class="form-group">
+            <mat-label>Mesto</mat-label>
+            <mat-select id="city" formControlName="city" (selectionChange)="onCitySelectionChange($event)">
+              <mat-option *ngFor="let city of cities" [value]="city">{{ city.name }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field class="form-group">
+            <mat-label>Ulica</mat-label>
+            <mat-select id="street" formControlName="street" (selectionChange)="onStreetSelectionChange($event)">
+              <mat-option *ngFor="let street of streets" [value]="street">{{ street.name }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field class="form-group">
+            <mat-label>Broj</mat-label>
+            <mat-select id="number" formControlName="number" (selectionChange)="onNumberSelectionChange($event)">
+              <mat-option *ngFor="let number of numbers" [value]="number">{{ number.number }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+        </div>
+        <div class="btn-container" *ngIf="showForm">
+          <button mat-raised-button color="primary" [disabled]="!searchForm.valid"
+            (click)="editSupplier($event)">Zapamti
+            izmene</button>
+          <button type="reset" mat-raised-button color="warn" (click)="onPonisti()">Poništi</button>
+        </div>
+
+      </div>
+    </form>
+  </div>
   <div>
     <h2>Dobavljači</h2>
     <div class="supplier-table-header">
@@ -114,10 +109,7 @@
       <span class="phone-number">Broj telefon</span>
     </div>
     <div class="supplier-list">
-      <app-supplier-row
-        *ngFor="let supplier of suppliersT"
-        [supplier]="supplier"
-      ></app-supplier-row>
+      <app-supplier-row *ngFor="let supplier of suppliersT" [supplier]="supplier"></app-supplier-row>
     </div>
   </div>
 
