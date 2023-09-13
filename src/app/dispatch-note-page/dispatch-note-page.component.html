@@ -1,2 +1,5 @@
-
-<app-dispatch-note-row *ngFor="let note of notes" [note]="note"></app-dispatch-note-row>
+<div ng-scrollbar style="width: 100%; height: 300px;">
+    <div class="edit-dispatch-note-page">
+        <app-dispatch-note-row *ngFor="let note of notes" [note]="note" [items]="note.items"></app-dispatch-note-row>
+    </div>
+</div>

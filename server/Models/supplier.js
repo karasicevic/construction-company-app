@@ -5,19 +5,17 @@ const sequelize = require('../Config/database');
 const Supplier = sequelize.define('supplier', {
   taxId: {
     primaryKey: true,
-    type: DataTypes.NUMBER,
+    type: DataTypes.STRING,
     allowNull: false,
     unique: true,
   },
   name: {
     type: DataTypes.STRING,
-    allowNull: false,
-    unique: true
+    allowNull: false
   },
   currentAccount: {
     type: DataTypes.STRING,
     allowNull: false,
-    unique: true
   },
   phoneNumber: {
     type: DataTypes.STRING,

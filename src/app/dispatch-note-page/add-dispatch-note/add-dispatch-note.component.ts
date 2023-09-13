@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ConstructionCompany } from 'src/app/models/construction-company.model';
 import { DispatchNote } from 'src/app/models/dispatch-note.model';
 import { ItemOfDispatchNote } from 'src/app/models/item-of-dispatch-note.model';
 import { Item } from 'src/app/models/item.model';
@@ -33,7 +32,6 @@ export class AddDispatchNoteComponent {
     }
   };
   suppliers: Supplier[]=[];
-  items: ItemOfDispatchNote[]=[];
   itemsA: Item[]=[];
   itemsFormArray!: FormArray;
 
@@ -71,36 +69,57 @@ export class AddDispatchNoteComponent {
   addDispatchNote(event: Event): void{
     event.preventDefault();
     if (this.addDispatchNoteForm.valid) {
-      // Implementirajte slanje podataka na server
 
-      
-      
-      const conCom=new ConstructionCompany();
       const formData = this.addDispatchNoteForm.value;
+      console.log(formData)
+
+      const itemsToSave: ItemOfDispatchNote[] = [];
+
       const newNote=new DispatchNote(
         formData.number,
         formData.shippingMethod,
         formData.selectedDate,
         formData.supplier,
-        conCom,
         formData.purchaseOrder,
-        formData.itemsFormArray
+        itemsToSave
       );
+      
+    const itemsFormArray = this.addDispatchNoteForm.get('items') as FormArray;
+    let i=1;
+    itemsFormArray.controls.forEach((itemControl) => {
+      const itemGroup = itemControl as FormGroup;
+      const newItemOfDispatchNote = new ItemOfDispatchNote(
+        newNote,
+        i,
+        itemGroup.get('note')?.value,
+        itemGroup.get('quantity')?.value,
+        itemGroup.get('itemA')?.value,
+        newNote.purchaseOrder,
+        itemGroup.get('itemOfPurchaseOrder')?.value,
+      );
+      itemsToSave.push(newItemOfDispatchNote);
+      i++;
+    });
+    newNote.items=itemsToSave;
+    console.log("new note")
+    console.log(newNote)
+      
         this.dispatchService.addDispatchNote(newNote);
         console.log(newNote)
-    }
+     }
+     this.itemsFormArray.clear();
+     this.addDispatchNoteForm.reset();
+}
+
+  onReset(){
+    this.itemsFormArray.clear();
   }
+
   addItem() {
     this.itemsFormArray = this.addDispatchNoteForm.get('items') as FormArray;
     this.itemsFormArray.push(this.createItem());
-    if (this.addDispatchNoteForm.valid) {
-//dodavanje u niz TODO
-      const itemsData = this.itemsFormArray.value;
 
-      console.log(itemsData); 
-    }
     const itemsData = this.itemsFormArray.value;
-    console.log("lose")
     console.log(itemsData); 
   }
 
@@ -109,7 +128,9 @@ export class AddDispatchNoteComponent {
       itemA: ['', Validators.required],
       quantity: ['', [Validators.required, Validators.pattern('^[0-9]+$')]],
       note: [''],
-      itemOfPurchaseOrder: ['', [Validators.required, Validators.pattern('^[0-9]+$')]]
+      itemOfPurchaseOrder: ['', [Validators.required, Validators.pattern('^[0-9]+$')]],
+      itemAMU: [''],
+      itemAPrice: ['']
     });
   }
 
@@ -117,12 +138,17 @@ export class AddDispatchNoteComponent {
     this.itemsFormArray.removeAt(index);
   }
 
-  onItemAChange(event: any,  index: number): void {
-    const selectedItemAValue = event; 
-    const itemArray = this.addDispatchNoteForm.get('items') as FormArray;
-    const itemGroup = itemArray.at(index);
-    itemGroup.get('itemAPrice')?.setValue(selectedItemAValue.price*selectedItemAValue.VATrate);
-    itemGroup.get('itemAMU')?.setValue(selectedItemAValue.measureUnit.designation);
+  onItemAChange(selectedItemA: any, index: number) {
+    const itemsFormArray = this.addDispatchNoteForm.get('items') as FormArray;
+    const itemGroup = itemsFormArray.at(index) as FormGroup;
+  
+    if (selectedItemA) {
+      itemGroup.get('itemAMU')?.setValue(selectedItemA.measureUnit);
+      itemGroup.get('itemAPrice')?.setValue(selectedItemA.price*selectedItemA.VATrate);
+    } else {
+      itemGroup.get('itemAMU')?.setValue(null);
+      itemGroup.get('itemAPrice')?.setValue(null);
+    }
   }
 
 }

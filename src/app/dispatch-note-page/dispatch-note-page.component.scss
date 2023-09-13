@@ -1,0 +1,19 @@
+.edit-dispatch-note-page {
+    display: flex;
+    flex-direction: column; /* Dodajte ovu liniju kako biste postavili prikaz u koloni */
+    //justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color:  rgb(236, 178, 236);
+    //background-image: url('https://www.hashmicro.com/blog/wp-content/uploads/2022/10/Tools-16.jpg'); 
+  //  background-size: cover;
+    //background-position: center;
+    opacity: 0.9; 
+    //margin-top: 100px;
+    //margin-bottom: 100px;
+  }

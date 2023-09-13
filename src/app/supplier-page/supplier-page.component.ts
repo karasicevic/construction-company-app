@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Supplier } from '../models/supplier.model';
-import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
+import { Subject, debounceTime, distinctUntilChanged, map, switchMap } from 'rxjs';
 import { SupplierService } from '../services/supplier.service';
 import { City } from '../models/city.model';
 import { Street } from '../models/street.model';
 import { Number } from '../models/number.model';
-import { MatSelectChange } from '@angular/material/select';
+import { MatSelect, MatSelectChange } from '@angular/material/select';
 import { AddressService } from '../services/address.service';
 
 @Component({
@@ -53,9 +53,9 @@ export class SupplierPageComponent {
   ngOnInit(): void {
     this.supplierService.getAllSuppliers().subscribe((suppliersRes: Supplier[]) => {
       this.suppliersT = suppliersRes;
-      this.addressService.getAllCities().subscribe((citiesRes: City[])=>{
-        this.cities=citiesRes;
-      });
+    });
+    this.addressService.getAllCities().subscribe((citiesRes: City[])=>{
+      this.cities=citiesRes;
     });
 
     this.initializeForm();
@@ -89,33 +89,57 @@ export class SupplierPageComponent {
     this.searchTrigger.next(query);
   }
 
-
   selectSearchResult(result: any) {
     this.showForm = true;
     this.searchResults = [];
     console.log('Selected:', result);
 
-    this.addressService.getStreets(result.city.zipCode).subscribe((streetsRes: Street[])=>{
-      this.streets=streetsRes;
-    });
-    this.addressService.getNumbers(result.city.zipCode, result.street.id).subscribe((numbersRes: Number[])=>{
-      this.numbers=numbersRes;
-    });
-
-    this.searchForm.patchValue({
-      taxId: result.taxId,
-      name: result.name,
-      currentAccount: result.currentAccount,
-      phoneNumber: result.phoneNumber,
-      city: result.city,
-      street: result.street,
-      number: result.number
-    });
-    //?????????????????????? nepotrebno, ne znam kako cu
-    this.searchForm.get('city')?.setValue(result.city);
-    this.searchForm.get('street')?.setValue(result.street);
-    this.searchForm.get('number')?.setValue(result.number);
-
+    let selCity = this.cities.find((city) => city.zipCode === result.cityId) as City;
+    this.citySel=selCity;
+    console.log(this.citySel)
+    console.log(selCity)    
+    
+    this.addressService.getStreets(selCity.zipCode).pipe(
+      switchMap((streetsRes: Street[]) => {
+        this.streets = streetsRes;
+  
+        let selStreet: Street = new Street(selCity, 999, "1");
+        this.streets.forEach((str) => {
+          if (str.id == result.streetId) {
+            selStreet = str;
+          }
+        });
+        this.streetSel=selStreet;
+        console.log(this.streetSel)
+        console.log(selStreet)
+  
+        return this.addressService.getNumbers(selCity.zipCode, selStreet.id).pipe(
+          map((numbersRes: Number[]) => {
+            this.numbers = numbersRes;
+  
+            let selNum: Number = new Number(selCity, selStreet, 2);
+            this.numbers.forEach((num) => {
+              if (num.number == result.number) {
+                selNum = num;
+              }
+            });
+            this.numberSel=selNum;
+            console.log(this.numberSel)
+            console.log(selNum)
+  
+            this.searchForm.patchValue({
+              taxId: result.taxId,
+              name: result.name,
+              currentAccount: result.currentAccount,
+              phoneNumber: result.phoneNumber,
+              city: selCity,
+              street: selStreet,
+              number: selNum
+            });
+          })
+        );
+      })
+    ).subscribe();
   }
 
   initializeForm(): void {
@@ -148,6 +172,8 @@ export class SupplierPageComponent {
         this.streetSel,
         this.numberSel
       );
+      console.log("za izmenu")
+      console.log(supplier);
       this.supplierService.editSupplier(supplier);
       this.searchForm.reset();
       this.cities = [];
@@ -158,10 +184,14 @@ export class SupplierPageComponent {
       this.numbers = [];
     }
     this.showForm = false;
-
+    this.suppliersT=[];
+    this.supplierService.getAllSuppliers().subscribe((suppliersRes: Supplier[]) => {
+      this.suppliersT = suppliersRes;
+    });
   }
 
   onCitySelectionChange(event: MatSelectChange): void {
+    console.log("usao u city change")
     const selectedCity = event.value;
     this.streets = [];
     this.numbers = [];
@@ -173,16 +203,18 @@ export class SupplierPageComponent {
   }
 
   onStreetSelectionChange(event: MatSelectChange): void {
+    console.log("usao u street change")
     const selectedStreet = event.value;
     this.numbers = [];
     console.log('Izabrana ulica:', selectedStreet);
-    this.addressService.getNumbers(selectedStreet.city.zipCode, selectedStreet.id).subscribe((numbersRes: Number[])=>{
+    this.addressService.getNumbers(selectedStreet.cityId, selectedStreet.id).subscribe((numbersRes: Number[])=>{
       this.numbers=numbersRes;
     });
     this.streetSel = selectedStreet;
   }
 
   onNumberSelectionChange(event: MatSelectChange): void {
+    console.log("usao u number change")
     const selectedNumber = event.value;
     this.numberSel = selectedNumber;
   }

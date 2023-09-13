@@ -32,7 +32,7 @@
                 <mat-form-field>
                     <mat-label>Izaberite dobavljača</mat-label>
                     <mat-select formControlName="supplier">
-                    <mat-option *ngFor="let supplier of suppliers" [value]="supplier.taxId">{{ supplier.name }}</mat-option>
+                    <mat-option *ngFor="let supplier of suppliers" [value]="supplier">{{ supplier.name }}</mat-option>
                     </mat-select>
                     <mat-error *ngIf="addDispatchNoteForm.get('supplier')?.hasError('required')">Dobavljač je obavezan.</mat-error>
                 </mat-form-field>
@@ -61,7 +61,7 @@
                         <mat-form-field>
                             <mat-label>Artikal</mat-label>
                             <mat-select formControlName="itemA" (valueChange)="onItemAChange($event, i)" required>
-                                <mat-option *ngFor="let itemA of itemsA" [value]="itemA.name">{{ itemA.name }}</mat-option>
+                                <mat-option *ngFor="let itemA of itemsA" [value]="itemA">{{ itemA.name }}</mat-option>
                             </mat-select>
                             <mat-error *ngIf="item.get('itemA')!.hasError('required')&&item.get('itemA')">Artikal je obavezan.</mat-error>
                         </mat-form-field>
@@ -100,8 +100,8 @@
                 
 
                 <div class="btn-container">
-                    <button mat-raised-button color="primary" [disabled]="addDispatchNoteForm.invalid" (click)="addDispatchNote($event)">Zapamti</button>
-                    <button type="reset" mat-raised-button color="warn" >Poništi</button>
+                    <button type="reset" mat-raised-button color="primary" [disabled]="addDispatchNoteForm.invalid" (click)="addDispatchNote($event)">Zapamti</button>
+                    <button type="reset" mat-raised-button (click)="onReset()" color="warn" >Poništi</button>
                 </div>
 
 

@@ -3,7 +3,7 @@ import { Item } from "./item.model";
 
 export class ItemOfDispatchNote {
     constructor(
-        public dispatchNote: DispatchNote,
+        public dispatchNote: DispatchNote | null,
         public number: number,
         public note: string,
         public quantity: number,

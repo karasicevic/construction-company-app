@@ -28,6 +28,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { DispatchNoteRowComponent } from './dispatch-note-page/dispatch-note-row/dispatch-note-row.component';
 import { HttpClientModule } from '@angular/common/http';
+import { NgScrollbarModule  } from 'ngx-scrollbar';
 
 @NgModule({
   declarations: [
@@ -60,7 +61,8 @@ import { HttpClientModule } from '@angular/common/http';
     MatInputModule,
     MatIconModule,
     MatTableModule,
-    HttpClientModule 
+    HttpClientModule,
+    NgScrollbarModule 
   ],
   providers: [],
   bootstrap: [AppComponent]

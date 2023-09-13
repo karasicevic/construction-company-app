@@ -21,8 +21,6 @@ export class AddressService {
   constructor(private http: HttpClient) { }
 
   getAllCities(): Observable<City[]> {
-    console.log("usao get city")
-
     return this.http.get<City[]>(this.apiUrlCities);
   }
 

@@ -40,4 +40,5 @@ const ItemOfDispatchNote = sequelize.define('itemOfDispatchNote', {
   freezeTableName: true
 });
 
+
 module.exports = ItemOfDispatchNote;

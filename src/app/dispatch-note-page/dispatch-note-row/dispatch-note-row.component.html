@@ -1,13 +1,12 @@
-<div class="add-dispatch-note-page">
 <div class="dispatch-note-row">
-    
-    <div style="display: flex; flex-direction: row; gap: 20px; margin-bottom: 40px;">
+<!-- Readonly prikaz glavnih elemenata otpremnice-->
+  <div style="display: flex; flex-direction: row; gap: 20px; margin-bottom: 40px;">
 
     <mat-form-field>
       <mat-label>Broj otpremnice</mat-label>
       <input matInput readonly [value]="note.number" />
     </mat-form-field>
-  
+
     <mat-form-field>
       <mat-label>Način otpreme</mat-label>
       <input matInput readonly [value]="note.shippingMethod" />
@@ -17,160 +16,198 @@
       <mat-label>Datum</mat-label>
       <input matInput readonly [value]="note.date | date:'dd.MM.yyyy'" />
     </mat-form-field>
-  
+
     <mat-form-field>
       <mat-label>Ime dobavljača</mat-label>
       <input matInput readonly [value]="note.supplier.name" />
     </mat-form-field>
-  
+
     <button mat-raised-button color="primary" (click)="openForm()">Izmeni</button>
-    </div>
-
-    <div class="form-container" *ngIf="showForm">
-        <mat-card>
-        <mat-card-content>
-         <form [formGroup]="editForm" >            
-            <h4 class="text-on-form">Izmenite podatke otpremnice</h4>
-            <div style="display: flex; flex-direction: row; gap: 120px; margin-bottom: 40px;">
+  </div>
+  <div class="form-container" *ngIf="showForm">
+    <mat-card>
+      <mat-card-content>
+        <form [formGroup]="editForm">
+          <!--Polja za izmenu glavnih elemenata otpremnice-->
+          <h4 class="text-on-form">Izmenite podatke otpremnice</h4>
+          <div style="display: flex; flex-direction: row; gap: 120px; margin-bottom: 40px;">
             <mat-form-field>
-                <mat-label for="number">Broj otpremnice</mat-label>
-                <input matInput readonly type="text" id="number" class="form-control" formControlName="number" /> 
-                <mat-error *ngIf="editForm.controls['number'].hasError('required') && editForm.controls['number'].dirty">
-                    {{validationMessages.number.required}}
-                </mat-error>
-                <mat-error *ngIf="editForm.controls['number'].hasError('pattern') && editForm.controls['number'].dirty">
-                    {{validationMessages.number.pattern}}
-                </mat-error>                                  
+              <mat-label for="number">Broj otpremnice</mat-label>
+              <input matInput readonly type="text" id="number" class="form-control" formControlName="number" />
+              <mat-error *ngIf="editForm.controls['number'].hasError('required') && editForm.controls['number'].dirty">
+                {{validationMessages.number.required}}
+              </mat-error>
+              <mat-error *ngIf="editForm.controls['number'].hasError('pattern') && editForm.controls['number'].dirty">
+                {{validationMessages.number.pattern}}
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
-                <mat-label for="shippingMethod">Način otpreme</mat-label>
-                <input matInput type="text" id="shippingMethod" class="form-control" formControlName="shippingMethod" />
-                <mat-error *ngIf="editForm.controls['shippingMethod'].hasError('required') && editForm.controls['shippingMethod'].dirty">
-                    {{validationMessages.shippingMethod.required}}
-                </mat-error>
+              <mat-label for="shippingMethod">Način otpreme</mat-label>
+              <input matInput type="text" id="shippingMethod" class="form-control" formControlName="shippingMethod" />
+              <mat-error
+                *ngIf="editForm.controls['shippingMethod'].hasError('required') && editForm.controls['shippingMethod'].dirty">
+                {{validationMessages.shippingMethod.required}}
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
-                <input matInput [matDatepicker]="picker" formControlName="selectedDate" placeholder="Izaberite datum">
-                <mat-datepicker-toggle matSuffix [for]="picker"><mat-icon>date_range</mat-icon></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
-                <mat-error *ngIf="editForm.get('selectedDate')?.hasError('required') && editForm.controls['selectedDate'].dirty">Datum je obavezan.</mat-error>    
-              </mat-form-field></div>
-        <div style="display: flex; flex-direction: row; gap: 120px;margin-bottom: 40px;">
+              <input matInput [matDatepicker]="picker" formControlName="selectedDate" placeholder="Izaberite datum">
+              <mat-datepicker-toggle matSuffix [for]="picker"><mat-icon>date_range</mat-icon></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+              <mat-error
+                *ngIf="editForm.get('selectedDate')?.hasError('required') && editForm.controls['selectedDate'].dirty">Datum
+                je obavezan.</mat-error>
+            </mat-form-field>
+          </div>
+          <div style="display: flex; flex-direction: row; gap: 120px;margin-bottom: 40px;">
             <mat-form-field>
-                <mat-label>Izaberite dobavljača</mat-label>
-                <mat-select formControlName="supplier">
-                <mat-option *ngFor="let supplier of suppliers" [value]="supplier.taxId">{{ supplier.name }}</mat-option>
-                </mat-select>
-                <mat-error *ngIf="editForm.get('supplier')?.hasError('required')">Dobavljač je obavezan.</mat-error>
+              <mat-label>Izaberite dobavljača</mat-label>
+              <mat-select formControlName="selectedSupplier">
+                <mat-option *ngFor="let supplier of suppliers" [value]="supplier">{{ supplier.name }}</mat-option>
+              </mat-select>
+              <mat-error *ngIf="editForm.get('selectedSupplier')?.hasError('required')">Dobavljač je obavezan.</mat-error>
             </mat-form-field>
             <mat-form-field>
-                <mat-label for="conCompany">Građevinsko preduzeće</mat-label>
-                <input matInput type="text" id="conCompany" class="form-control" formControlName="conCompany" />
-                <mat-error *ngIf="editForm.controls['conCompany'].hasError('required') && editForm.controls['conCompany'].dirty">
-                {{validationMessages.conCompany.required}}
-                </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-                <mat-label for="purchaseOrder">Po narudžbenici</mat-label>
-                <input matInput type="text" id="purchaseOrder" class="form-control" formControlName="purchaseOrder"/>    
-                <mat-error *ngIf="editForm.controls['purchaseOrder'].hasError('required') && editForm.controls['purchaseOrder'].dirty">
+              <mat-label for="purchaseOrder">Po narudžbenici</mat-label>
+              <input matInput type="text" id="purchaseOrder" class="form-control" formControlName="purchaseOrder" />
+              <mat-error
+                *ngIf="editForm.controls['purchaseOrder'].hasError('required') && editForm.controls['purchaseOrder'].dirty">
                 {{validationMessages.purchaseOrder.required}}
-                </mat-error>
-                <mat-error *ngIf="editForm.controls['purchaseOrder'].hasError('pattern') && editForm.controls['purchaseOrder'].dirty">
+              </mat-error>
+              <mat-error
+                *ngIf="editForm.controls['purchaseOrder'].hasError('pattern') && editForm.controls['purchaseOrder'].dirty">
                 {{validationMessages.purchaseOrder.pattern}}
-                </mat-error>         
+              </mat-error>
             </mat-form-field>
-            </div>
+          </div>
 
-            <button mat-raised-button color="primary" (click)="addItem()">Dodaj stavku</button>
-<!--dodaj polja za izmenu-->
-<div  *ngIf="editItemB" style="display: flex; flex-direction: row; gap: 10px;">
-    <mat-form-field>
-        <mat-label>Artikal</mat-label>
-        <input matInput readonly type="eitemA" formControlName="eitemA"  />
-    </mat-form-field>
-    <mat-form-field>
-        <mat-label>JM</mat-label>
-        <input matInput readonly type="eitemAMU" formControlName="eitemAMU"  />
-    </mat-form-field>
-    <mat-form-field>
-        <mat-label>Cena</mat-label>
-        <input matInput readonly type="eitemPrice" formControlName="eitemPrice" />
-    </mat-form-field>
-    <mat-form-field>
-        <mat-label>Količina</mat-label>
-        <input matInput type="number" formControlName="quantity" required />
-        <mat-error *ngIf="editForm.get('quantity')!.hasError('required')">Količina je obavezna.</mat-error>
-        <mat-error *ngIf="editForm.get('quantity')!.hasError('pattern')">Količina mora biti ceo broj.</mat-error>
-    </mat-form-field>
-    <mat-form-field>
-        <mat-label>Napomena</mat-label>
-        <input matInput type="text" formControlName="note" />
-    </mat-form-field>
-    <mat-form-field>
-        <mat-label>Broj stavke narudžbenice</mat-label>
-        <input matInput type="number" formControlName="itemOfPurchaseOrder" required />
-        <mat-error *ngIf="editForm.get('itemOfPurchaseOrder')!.hasError('required')">Broj stavke narudžbenice je obavezan.</mat-error>
-        <mat-error *ngIf="editForm.get('itemOfPurchaseOrder')!.hasError('pattern')">Broj stavke narudžbenice sastoji se samo od cifara.</mat-error>
-    </mat-form-field>
-    <button mat-raised-button color="primary" [disabled]="editForm.invalid" (click)="saveEditItem()">Sačuvaj</button>
-    </div>
+          <!--Polja za dodavnje stavke-->
+            <div formArrayName="itemsNew">
+              <div *ngFor="let item of itemsFormArray?.controls; let i = index" [formGroupName]="i">
+                  <div style="display: flex; flex-direction: row; gap: 10px;">
+                  <mat-form-field>
+                      <mat-label>Artikal</mat-label>
+                      <mat-select formControlName="itemAadd" (valueChange)="onItemAChange($event, i)" required>
+                          <mat-option *ngFor="let itemA of itemsA" [value]="itemA">{{ itemA.name }}</mat-option>
+                      </mat-select>
+                      <mat-error *ngIf="item.get('itemAadd')!.hasError('required')&&item.get('itemAadd')">Artikal je obavezan.</mat-error>
+                  </mat-form-field>
+                  <mat-form-field class="small-input">
+                      <mat-label>JM</mat-label>
+                      <input matInput class="small-input" readonly type="itemAMUadd" formControlName="itemAMUadd"  />
+                   </mat-form-field>
+                  <mat-form-field class="small-input">
+                      <mat-label>Cena</mat-label>
+                      <input matInput class="small-input" readonly type="itemAPriceadd" formControlName="itemAPriceadd" /> 
+                  </mat-form-field>
+                  <mat-form-field class="small-input">
+                      <mat-label>Količina</mat-label>
+                      <input matInput class="small-input" type="number" formControlName="quantityadd" required />
+                      <mat-error *ngIf="item.get('quantityadd')!.hasError('required')">Količina je obavezna.</mat-error>
+                      <mat-error *ngIf="item.get('quantityadd')!.hasError('pattern')">Količina mora biti ceo broj.</mat-error>
+                  </mat-form-field>
+                  <mat-form-field>
+                      <mat-label>Napomena</mat-label>
+                      <input matInput type="text" formControlName="noteadd" />
+                  </mat-form-field>
+                  <mat-form-field >
+                      <mat-label>Stavka narudžbenice</mat-label>
+                      <input matInput  type="number" formControlName="itemOfPurchaseOrderadd" required />
+                      <mat-error *ngIf="item.get('itemOfPurchaseOrderadd')!.hasError('required')">Broj stavke narudžbenice je obavezan.</mat-error>
+                      <mat-error *ngIf="item.get('itemOfPurchaseOrderadd')!.hasError('pattern')">Broj stavke narudžbenice sastoji se samo od cifara.</mat-error>
+                  </mat-form-field>
+                  <button mat-raised-button color="warn" (click)="deleteItemAdded(i)">Obriši</button>
+                  </div>
+              </div>
+          </div>
+          <button mat-raised-button color="primary" (click)="addItem()">Dodaj stavku</button>
 
+          <!--Polja za izmenu stavke-->
+          <div *ngIf="editItemB" style="display: flex; flex-direction: row; gap: 10px;">
+            <mat-form-field>
+              <mat-label>Artikal</mat-label>
+              <input matInput readonly type="eitemA" formControlName="eitemA" />
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>JM</mat-label>
+              <input matInput readonly type="eitemAMU" formControlName="eitemAMU" />
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Cena</mat-label>
+              <input matInput readonly type="eitemAPrice" formControlName="eitemAPrice" />
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Količina</mat-label>
+              <input matInput type="number" formControlName="quantity" required />
+              <mat-error *ngIf="editForm.get('quantity')!.hasError('required')">Količina je obavezna.</mat-error>
+              <mat-error *ngIf="editForm.get('quantity')!.hasError('pattern')">Količina mora biti ceo broj.</mat-error>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Napomena</mat-label>
+              <input matInput type="text" formControlName="note" />
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Broj stavke narudžbenice</mat-label>
+              <input matInput type="number" formControlName="itemOfPurchaseOrder" required />
+              <mat-error *ngIf="editForm.get('itemOfPurchaseOrder')!.hasError('required')">Broj stavke narudžbenice je
+                obavezan.</mat-error>
+              <mat-error *ngIf="editForm.get('itemOfPurchaseOrder')!.hasError('pattern')">Broj stavke narudžbenice
+                sastoji se samo od cifara.</mat-error>
+            </mat-form-field>
+            <button mat-raised-button color="primary" [disabled]="editForm.invalid"
+              (click)="saveEditItem()">Sačuvaj</button>
+          </div>
 
-<table mat-table [dataSource]="items" class="mat-elevation-z8">
-    <ng-container matColumnDef="itemA">
-      <th mat-header-cell *matHeaderCellDef>Artikal</th>
-      <td mat-cell *matCellDef="let item">{{ item.item.name }}</td>
-    </ng-container>
-    <ng-container matColumnDef="itemAMU">
-        <th mat-header-cell *matHeaderCellDef>JM</th>
-        <td mat-cell *matCellDef="let item">{{ item.item.measureUnit.designation }}</td>
-      </ng-container>
-      <ng-container matColumnDef="itemAPrice">
-        <th mat-header-cell *matHeaderCellDef>Cena</th>
-        <td mat-cell *matCellDef="let item">{{ item.item.price*item.item.VATrate }}</td>
-      </ng-container>
-  
-    <ng-container matColumnDef="quantity">
-      <th mat-header-cell *matHeaderCellDef>Količina</th>
-      <td mat-cell *matCellDef="let item">{{ item.quantity }}</td>
-    </ng-container>
-    <ng-container matColumnDef="note">
-      <th mat-header-cell *matHeaderCellDef>Napomena</th>
-      <td mat-cell *matCellDef="let item">{{ item.note }}</td>
-    </ng-container>
-    <ng-container matColumnDef="itemOfPurchaseOrder">
-        <th mat-header-cell *matHeaderCellDef>Stavka narudžbenice</th>
-        <td mat-cell *matCellDef="let item">{{ item.itemOfPurchaseOrder }}</td>
-      </ng-container>
-  
-    <ng-container matColumnDef="actions">
-      <th mat-header-cell *matHeaderCellDef>Akcije</th>
-      <td mat-cell *matCellDef="let item">
-        <button mat-button (click)="editItem(item)">Izmeni</button>
-        <button mat-button (click)="deleteItem(item)">Obriši</button>
-      </td>
-    </ng-container>
-  
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
-  
-   
-            
+          <!--Tabela stavki-->
+          <table mat-table [dataSource]="items" class="mat-elevation-z8 centered-table">
+            <ng-container matColumnDef="itemA">
+              <th mat-header-cell *matHeaderCellDef>Artikal</th>
+              <td mat-cell *matCellDef="let item">{{ item.item.name }}</td>
+            </ng-container>
+            <ng-container matColumnDef="quantity">
+              <th mat-header-cell *matHeaderCellDef>Količina</th>
+              <td mat-cell *matCellDef="let item">{{ item['quantity'] }}</td>
+            </ng-container>
+            <ng-container matColumnDef="itemAMU">
+              <th mat-header-cell *matHeaderCellDef>JM</th>
+              <td mat-cell *matCellDef="let item">{{ item.item.measureUnit }}</td>
+            </ng-container> 
+             <ng-container matColumnDef="itemAPrice">
+              <th mat-header-cell *matHeaderCellDef>Cena</th>
+              <td mat-cell *matCellDef="let item">{{ item.item.price*item.item.VATrate }}</td>
+            </ng-container>
+            <ng-container matColumnDef="note">
+              <th mat-header-cell *matHeaderCellDef>Napomena</th>
+              <td mat-cell *matCellDef="let item">{{ item['note'] }}</td>
+            </ng-container>
+            <ng-container matColumnDef="itemOfPurchaseOrder">
+              <th mat-header-cell *matHeaderCellDef>Stavka narudžbenice</th>
+              <td mat-cell *matCellDef="let item">{{ item['itemOfPurchaseOrder'] }}</td>
+            </ng-container>
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef>Akcije</th>
+              <td mat-cell *matCellDef="let item">
+                <button mat-button (click)="editItem(item)">Izmeni</button>
+                <button mat-button (click)="deleteItem(item)">Obriši</button>
+              </td>
+            </ng-container>
 
-            <div class="btn-container">
-                <button mat-raised-button color="primary" [disabled]="editForm.invalid" (click)="editDispatchNote($event)">Zapamti</button>
-                <button type="reset" mat-raised-button color="warn" (click)="closeForm()" >Poništi</button>
-            </div>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let item; columns: displayedColumns;"></tr>
+          </table>
+
+          <!--Finalni dugmici-->
+          <div class="btn-container">
+            <button mat-raised-button color="primary" [disabled]="editForm.invalid"
+              (click)="editDispatchNote($event)">Zapamti</button>
+            <button type="reset" mat-raised-button color="warn" (click)="closeForm()">Poništi</button>
+          </div>
 
 
 
         </form>
-        </mat-card-content>
+      </mat-card-content>
     </mat-card>
-    
 
-    </div>
+
   </div>
 </div>
